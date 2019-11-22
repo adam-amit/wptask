@@ -5,7 +5,7 @@ get_header();
 <main>
 
 	<section class="single-post taxonomy-<?php the_ID(); ?>">
-		<div class="container">
+		<div class="container pb-3">
 			<div class="row py-3">
 				<div class="col-12">
 					<h3 class="font-weight-bold">
@@ -56,7 +56,7 @@ get_header();
 				?>
 			<div class="row py-5">
 				<div class="col-12 text-center pb-3">
-					<h3 class="section-heading">Testimonials from our client</h3>
+					<h3 class="section-heading">Testimonials from our clients using <?php single_term_title( '' ); ?></h3>
 				</div>
 				<div class="col-12">
 					<div class="testimonial-slider owl-carousel owl-theme">
