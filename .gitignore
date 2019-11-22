@@ -1,0 +1,60 @@
+# ignore everything in the root except the "wp-content" directory.
+/*
+!wp-content/
+!images/
+
+ 
+# ignore all files starting with .
+.*
+!.eslintrc
+!.editorconfig
+!.gitignore
+ 
+# track readme.md in the root (i.e. do NOT ignore it)
+!readme.md
+ 
+# ignore all files that start with ~
+~*
+ 
+# ignore OS generated files
+ehthumbs.db
+Thumbs.db
+
+# ignore log files and databases
+*.log
+*.sql
+*.sqlite
+ 
+# ignore compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+ 
+# ignore packaged files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+ 
+# ignore everything in the "wp-content" directory, except:
+# "plugins" directory
+# "themes" directory
+wp-content/*
+!wp-content/install.php
+wp-content/plugins/
+wp-content/plugins/hello.php
+!wp-content/themes/
+
+
+# ADVANCED OPTION
+# ignore all twentyXX themes
+wp-content/themes/twenty*
+wp-content/themes/index.php
+node_modules
