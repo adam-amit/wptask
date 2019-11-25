@@ -4,7 +4,7 @@ get_header();
 
 <main>
 
-    <section class="testimonial-archive-container">
+    <section class="py-5 testimonial-archive-container">
         <div class="container">
             <div class="row">
                 <div class="col-md-9">

@@ -4,7 +4,7 @@ get_header();
 
 <main>
 
-	<section class="single-post testimonial-<?php the_ID(); ?>">
+	<section class="single-post py-5 testimonial-<?php the_ID(); ?>">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">

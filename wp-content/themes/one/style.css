@@ -1110,7 +1110,7 @@ body {
 /*Custom styles here*/
 .header {
   background: rgb(216, 62, 50);
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 
 body.home .header {
@@ -1435,4 +1435,21 @@ ul.service-cat-list li ul.service-sub-cat-list li {
 
 .pagination .page-numbers.current {
   color: #0c1027;
+}
+
+
+/*Contact Section styles*/
+.contact-header {
+  background: url('/wp-content/themes/one/images/contact-bg.jpg');
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-details .embed-responsive {
+  max-height: 450px;
 }
