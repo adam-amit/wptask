@@ -9,6 +9,10 @@
             loop: true
         });
 
+        $('#cta-btn').on('click', function() {
+            $('.floating-cta-bar').hide();
+        });
+
     });
 
 })(jQuery);

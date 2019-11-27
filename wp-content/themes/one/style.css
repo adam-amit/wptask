@@ -1453,3 +1453,8 @@ ul.service-cat-list li ul.service-sub-cat-list li {
 .contact-details .embed-responsive {
   max-height: 450px;
 }
+
+/*Floating CTA section*/
+.floating-cta-bar {
+  background: #0c1027;
+}
