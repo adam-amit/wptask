@@ -52,6 +52,8 @@
 	</div>
 </section> -->
 
+<?php echo do_shortcode('[fcta_shortcode]'); ?>
+
 <footer class="footer py-5">
 	<div class="container">
 		<div class="row">

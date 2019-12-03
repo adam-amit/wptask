@@ -52,6 +52,10 @@ Class FloatingCTA {
             ?>
             </form>
         </div>
+        <div class="shortcode-wrap">
+            <h4>Use this shortcode inside your templates</h4>
+            <input type="text" value="[fcta_shortcode]" readonly>
+        </div>
         <?php
     }
 
