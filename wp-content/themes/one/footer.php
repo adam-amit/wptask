@@ -12,8 +12,8 @@
 ?>
 
 
-<?php $cta_pos = get_field('cta_position', 'options'); ?>
-<section class="floating-cta-bar fixed-<?php echo $cta_pos; ?> text-light py-4">
+<?php// $cta_pos = get_field('cta_position', 'options'); ?>
+<!-- <section class="floating-cta-bar fixed-<?php// echo $cta_pos; ?> text-light py-4">
 	<div class="container-fluid">
 		<div class="row">
 			
@@ -21,7 +21,7 @@
 			$cta_main_text = get_field('cta_main_text', 'options');
 			if( $cta_main_text ) : ?>
 				<div class="col-md-3">
-					<h5 class="section-heading"><?php echo $cta_main_text; ?></h5>
+					<h5 class="section-heading"><?php// echo $cta_main_text; ?></h5>
 				</div>
 			<?php endif; ?>
 
@@ -29,7 +29,7 @@
 			$cta_desc = get_field('cta_description', 'options');
 			if( $cta_desc ) : ?>
 				<div class="col-12 col-md-5">
-					<p class="mb-0 text-center"><?php echo $cta_desc; ?></p>
+					<p class="mb-0 text-center"><?php// echo $cta_desc; ?></p>
 				</div>
 			<?php endif; ?>
 
@@ -38,7 +38,7 @@
 				while( have_rows('cta_buttons', 'options') ) : the_row('cta_buttons', 'options'); ?>
 					<div class="col text-center">
 						<?php $btn = get_sub_field('cta_button'); ?>
-						<a href="<?php echo $btn['url']; ?>" target="<?php echo $btn['target'] ? $btn['target'] : '_self'; ?>" class="btn btn-primary text-light"><?php echo $btn['title']; ?></a>
+						<a href="<?php// echo $btn['url']; ?>" target="<?php //echo $btn['target'] ? $btn['target'] : '_self'; ?>" class="btn btn-primary text-light"><?php //echo $btn['title']; ?></a>
 					</div>
 				<?php endwhile; ?>
 			<?php endif; ?>
@@ -50,7 +50,7 @@
 			</div>
 		</div>
 	</div>
-</section>
+</section> -->
 
 <footer class="footer py-5">
 	<div class="container">
@@ -79,9 +79,9 @@
 						<?php $link = get_sub_field('link'); ?>
 						<a href="<?php echo $link['url'] ?>">
 							<?php 
-										$icon = get_sub_field('icon');
-										echo wp_get_attachment_image( $icon, 'full' );
-									?>
+								$icon = get_sub_field('icon');
+								echo wp_get_attachment_image( $icon, 'full' );
+							?>
 						</a>
 					</li>
 					<?php endwhile; ?>

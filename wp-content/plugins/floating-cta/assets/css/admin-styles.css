@@ -1,0 +1,13 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+.setting-page table {
+    max-width: 600px;
+}
+
+.setting-page table .fcta-input-field {
+    width: 100%;
+}

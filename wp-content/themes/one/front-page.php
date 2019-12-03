@@ -84,6 +84,7 @@ get_header();
 			<div class="row">
 				<div class="col-12 pb-5 text-center">
 					<h2 class="section-heading"><?php the_field('testimonial_section_heading'); ?></h2>
+					<?php echo do_shortcode('[fcta_shortcode]'); ?>
 				</div>
 			</div>
 
