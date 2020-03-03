@@ -52,7 +52,9 @@
 	</div>
 </section> -->
 
+<div class="shortcode">
 <?php echo do_shortcode('[fcta_shortcode]'); ?>
+</div>
 
 <footer class="footer py-5">
 	<div class="container">

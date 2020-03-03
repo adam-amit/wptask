@@ -17,8 +17,10 @@ Class FloatingCTA {
         add_action( 'admin_menu', array( $this, 'addSettingsPage' ) );
         add_action( 'admin_init', array( $this, 'addSettingsSection' ));
         add_action( 'admin_enqueue_scripts', array( $this, 'fcta_admin_assets' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'fcta_public_assets' ) );
         add_filter( 'plugin_action_links_'.plugin_basename(__FILE__), array( $this, 'fcta_add_plugin_page_settings_link' ) );
         add_shortcode( 'fcta_shortcode', array( $this, 'fcta_generate_shortcode' ) );
+        add_action( 'init', array( $this, 'set_fcta_cookie' ) );
     }
 
     public function addSettingsPage() {
@@ -29,6 +31,11 @@ Class FloatingCTA {
     public function fcta_admin_assets() {
         wp_register_style( 'fcta_admin_styles', plugins_url( 'assets/css/admin-styles.css', __FILE__ ), false, '1.0.0' );
         wp_enqueue_style( 'fcta_admin_styles' );
+    }
+
+    public function fcta_public_assets() {
+        wp_register_script( 'fcta_admin_script', plugins_url( 'assets/js/plugin.js', __FILE__ ), false, '1.0.0', true );
+        wp_enqueue_script( 'fcta_admin_script' );
     }
 
     public function fcta_add_plugin_page_settings_link( $links ) {
@@ -42,21 +49,21 @@ Class FloatingCTA {
         // Set class property
         $this->options = get_option( 'fcta_option_name' );
         ?>
-        <div class="wrap setting-page">
-            <h1>Floating Call to Action Settings</h1>
-            <form method="post" action="options.php">
-            <?php
-                settings_fields( 'fcta_option_group' );
-                do_settings_sections( 'fcta-settings' );
-                submit_button();
-            ?>
-            </form>
-        </div>
-        <div class="shortcode-wrap">
-            <h4>Use this shortcode inside your templates</h4>
-            <input type="text" value="[fcta_shortcode]" readonly>
-        </div>
-        <?php
+<div class="wrap setting-page">
+	<h1>Floating Call to Action Settings</h1>
+	<form method="post" action="options.php">
+		<?php
+                                        settings_fields( 'fcta_option_group' );
+                                        do_settings_sections( 'fcta-settings' );
+                                        submit_button();
+                                    ?>
+	</form>
+</div>
+<div class="shortcode-wrap">
+	<h4>Use this shortcode inside your templates</h4>
+	<input type="text" value="[fcta_shortcode]" readonly>
+</div>
+<?php
     }
 
     public function addSettingsSection() {
@@ -73,7 +80,7 @@ Class FloatingCTA {
             array( $this, 'floating_custom_sections' ),
             'fcta-settings'
         );
-
+        
         /* CTA Color Field */
         add_settings_field(
             'fcta_bg',
@@ -101,6 +108,15 @@ Class FloatingCTA {
             'fcta_section_id'
         );
 
+        /* CTA Content Field */
+        add_settings_field(
+            'fcta_display',
+            'Floating CTA Display',
+            array( $this, 'fcta_display_callback' ),
+            'fcta-settings',
+            'fcta_section_id'
+        );
+
     }
 
     public function floating_custom_sections() {
@@ -119,6 +135,9 @@ Class FloatingCTA {
         if( isset( $input['fcta_content'] ) )
             $new_input['fcta_content'] = sanitize_text_field( $input['fcta_content'] );
 
+        if( isset( $input['fcta_display'] ) )
+            $new_input['fcta_display'] = $input['fcta_display'];    //No Need to sanitize checboxes
+
         return $new_input;
     }
 
@@ -132,15 +151,17 @@ Class FloatingCTA {
 
     public function fcta_pos_callback() {
         ?>
-            <select name="fcta_option_name[fcta_pos]" id="fcta_pos" class="fcta-input-field">
-                <option value="Top" <?php echo isset( $this->options['fcta_pos'] ) ? ( selected( $this->options['fcta_pos'], 'Top', false ) ) : ( '' ); ?>>
-                    <?php echo "Top"; ?>
-                </option>
-                <option value="Bottom" <?php echo isset( $this->options['fcta_pos'] ) ? ( selected( $this->options['fcta_pos'], 'Bottom', false ) ) : ( '' ); ?>>
-                    <?php echo "Bottom"; ?>
-                </option>
-            </select>
-        <?php
+<select name="fcta_option_name[fcta_pos]" id="fcta_pos" class="fcta-input-field">
+	<option value="Top"
+		<?php echo isset( $this->options['fcta_pos'] ) ? ( selected( $this->options['fcta_pos'], 'Top', false ) ) : ( '' ); ?>>
+		<?php echo "Top"; ?>
+	</option>
+	<option value="Bottom"
+		<?php echo isset( $this->options['fcta_pos'] ) ? ( selected( $this->options['fcta_pos'], 'Bottom', false ) ) : ( '' ); ?>>
+		<?php echo "Bottom"; ?>
+	</option>
+</select>
+<?php
     }
 
     public function fcta_content_callback() {
@@ -150,14 +171,49 @@ Class FloatingCTA {
         );
     }
 
+    public function fcta_display_callback() {
+
+        $options = get_option( 'fcta_option_name', [] );
+        $fcta_checkbox = isset( $options['fcta_display'] ) ? (array) $options['fcta_display'] : [];
+        $pages = get_pages(); 
+        foreach ( $pages as $key => $page ) {
+            $option = '<input 
+            type="checkbox" 
+            value="' . $page->ID . '" 
+            id="'. $page->ID .'" 
+            name="fcta_option_name[fcta_display][]" 
+            '. checked( in_array( "$page->ID", $fcta_checkbox ), true, false ) . '
+            />';
+            $option .= '<label for="'. $page->ID .'">'. $page->post_title . '</label> <br/>';
+            echo $option;
+        }
+    }
+
     public function fcta_generate_shortcode() {
+        
+        global $post;
         $data = get_option('fcta_option_name');
-        $html = '<section class="floating-cta-bar fixed-' . strtolower( $data['fcta_pos'] ) . ' text-light py-4" style="background-color: ' . $data['fcta_bg'] . '">';
-        $html .= '<div class="container-fluid"><div class="row">';
-        $html .= '<div class="col-11"><p class="mb-0 text-center">' . $data['fcta_content'] . ' </p></div>';
-        $html .= '<div class="col-1"><button id="cta-btn" type="button" class="close text-light" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-        $html .= '</div></div></section>';
+        $html = '';
+        if( in_array($post->ID, $data['fcta_display']) ) {
+            $html = '<section class="floating-cta-bar fixed-' . strtolower( $data['fcta_pos'] ) . ' text-light py-4" style="background-color: ' . $data['fcta_bg'] . '">';
+            $html .= '<div class="container-fluid"><div class="row">';
+            $html .= '<div class="col-11"><p class="mb-0 text-center">' . $data['fcta_content'] . ' </p></div>';
+            $html .= '<div class="col-1"><button id="cta-btn" data-id="'. $post->ID . '" type="button" class="close text-light" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+            $html .= '</div></div></section>';
+        }
+        
         return $html;
+    }
+
+    public function set_fcta_cookie() {
+        if( isset( $_COOKIE['fcta_closed'] ) ) {
+            $data = get_option('fcta_option_name');
+            $key = array_search( $_COOKIE['fcta_closed'], $data['fcta_display'] );
+            if( $key !== false ) {
+                unset( $data['fcta_display'][$key] );
+            }
+            update_option( 'fcta_option_name', $data );
+        }
     }
 
 }
