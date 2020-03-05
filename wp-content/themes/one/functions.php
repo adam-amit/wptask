@@ -302,3 +302,5 @@ if( function_exists('acf_add_options_page') ) {
 //     return $post_link;  
 // }
 // add_filter( 'post_type_link', 'wpa_course_post_link', 1, 3 );
+
+add_filter('acf/settings/remove_wp_meta_box', '__return_false');
